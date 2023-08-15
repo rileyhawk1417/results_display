@@ -3,6 +3,8 @@ import supabase from "@/lib/supabase_connector";
 export const NewStudent = async (values: any) => {
   await supabase
     .from("student_data")
+    //@ts-ignore
+    //TODO: Fix types
     .insert([
       {
         fname: values.fname,

@@ -14,6 +14,8 @@ async function getData(): Promise<Student[]> {
   //TODO: Add realtime subscription
   let { data: students, error } = await supabase.from("student_data").select();
   console.log(students);
+  //@ts-ignore
+  //TODO: Fix the types
   return students?.map((item: any, idx: number) => ({
     id: item.id,
     name: item.fname,
