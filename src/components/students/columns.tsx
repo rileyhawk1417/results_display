@@ -7,14 +7,71 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import StudentCard from "@/components/studentCard";
 import DeleteStudent from "@/components/students/deleteStudent";
+
+interface StudentProps {
+  id: string;
+  name: string;
+  surname: string;
+  results: string;
+  email: string;
+  phone_no: string;
+}
+const ViewStudent = (
+  { id, name, surname, results, email, phone_no }: StudentProps,
+) => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          <span>View Student</span>
+        </DropdownMenuItem>
+      </DialogTrigger>
+
+      <StudentCard
+        studentID={id}
+        fname={name}
+        lname={surname}
+        results={results.toString()}
+        email={email}
+        phone_no={phone_no}
+      />
+    </Dialog>
+  );
+};
+
+const DeleteStudentDialog = (
+  { id, name, surname, results, email, phone_no }: StudentProps,
+) => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <DropdownMenuItem
+          className="bg-red-500"
+          onSelect={(e) => e.preventDefault()}
+        >
+          <span>Delete Student</span>
+        </DropdownMenuItem>
+      </DialogTrigger>
+      <DeleteStudent
+        studentID={id}
+        fname={name}
+        lname={surname}
+        results={results.toString()}
+        email={email}
+        phone_no={phone_no}
+      />
+    </Dialog>
+  );
+};
 
 export type Student = {
   id: string;
@@ -92,51 +149,46 @@ export const columns: ColumnDef<Student>[] = [
     cell: ({ row }) => {
       const student = row.original;
       return (
-        <Dialog>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="ml-auto">
-                <span className="sr-only">Open Menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(student.id)}
-              >
-                Copy Student Number
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DialogTrigger asChild>
-                <DropdownMenuItem>
-                  <span>View Student</span>
-                </DropdownMenuItem>
-              </DialogTrigger>
-              <DialogTrigger asChild>
-                <DropdownMenuItem className="bg-red-500">
-                  <span>Delete Student</span>
-                </DropdownMenuItem>
-              </DialogTrigger>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <StudentCard
-            studentID={student.id}
-            fname={student.name}
-            lname={student.surname}
-            results={student.results.toString()}
-            email={student.email}
-            phone_no={student.phone_no}
-          />
-          <DeleteStudent
-            studentID={student.id}
-            fname={student.name}
-            lname={student.surname}
-            results={student.results.toString()}
-            email={student.email}
-            phone_no={student.phone_no}
-          />
-        </Dialog>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="ml-auto">
+              <span className="sr-only">Open Menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(student.id)}
+            >
+              Copy Student Number
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <ViewStudent
+                id={student.id}
+                name={student.name}
+                surname={student.surname}
+                results={student.results}
+                email={student.email}
+                phone_no={student.phone_no}
+              />
+              <DeleteStudentDialog
+                id={student.id}
+                name={student.name}
+                surname={student.surname}
+                results={student.results}
+                email={student.email}
+                phone_no={student.phone_no}
+              />
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+          {
+            /* NOTE: Two modals can't trigger separately
+              Take a look at radix-ui
+          */
+          }
+        </DropdownMenu>
       );
     },
   },

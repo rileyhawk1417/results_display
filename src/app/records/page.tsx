@@ -1,8 +1,9 @@
 import DataTable from "@/components/students/data-table";
-import { Student, columns } from "@/components/students/columns";
+import { columns, Student } from "@/components/students/columns";
 import type { Metadata } from "next";
 import supabase from "@/lib/supabase_connector";
 import { Toaster } from "@/components/ui/toaster";
+import { nanoid } from "nanoid";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -12,28 +13,27 @@ export const metadata: Metadata = {
 
 async function getData(): Promise<Student[]> {
   //TODO: Add realtime subscription
-  let { data: students, error } = await supabase.from("student_data").select();
+  let { data: students, error } = await supabase.from("students").select();
   console.log(students);
+  //TODO: Fix the types for supabase
   //@ts-ignore
-  //TODO: Fix the types
   return students?.map((item: any, idx: number) => ({
     id: item.id,
-    name: item.fname,
-    surname: item.lname,
+    name: item.surname,
+    surname: item.surname,
     email: item.email,
     results: item.results,
-    phone_no: item.phone_no,
+    phone_no: item.phone,
   }));
-  /*
-    return new Array(100).fill(null).map(() => ({
-        id: `ID${nanoid()}`,
-        name: "John",
-        surname: "Doe",
-        email: "ruckus@boondocks.com",
-        results: 'pending',
-        phone_no: `+263 ${Math.random() * 1000}`
-    }))
-    */
+  //NOTE: Used for local testing
+  return new Array(100).fill(null).map(() => ({
+    id: `ID${nanoid()}`,
+    name: "John",
+    surname: "Doe",
+    email: "ruckus@boondocks.com",
+    results: "pending",
+    phone_no: `+263 ${Math.random() * 1000}`,
+  }));
 }
 
 const Home = async () => {
