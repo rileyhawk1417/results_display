@@ -14,18 +14,18 @@ export const metadata: Metadata = {
 async function getData(): Promise<Student[]> {
   //TODO: Add realtime subscription
   let { data: students, error } = await supabase.from("students").select();
-  console.log(students);
   //TODO: Fix the types for supabase
   //@ts-ignore
   return students?.map((item: any, idx: number) => ({
-    id: item.id,
-    name: item.surname,
+    id: item.student_no,
+    name: item.name,
     surname: item.surname,
     email: item.email,
     results: item.results,
     phone_no: item.phone,
   }));
   //NOTE: Used for local testing
+  /*
   return new Array(100).fill(null).map(() => ({
     id: `ID${nanoid()}`,
     name: "John",
@@ -34,16 +34,17 @@ async function getData(): Promise<Student[]> {
     results: "pending",
     phone_no: `+263 ${Math.random() * 1000}`,
   }));
+    */
 }
 
-const Home = async () => {
+const Page = async () => {
   const data = await getData();
   return (
-    <div className="container mx-auto py-10">
+    <div className="min-h-screen  container mx-auto py-10">
       <Toaster />
       <DataTable columns={columns} data={data} />
     </div>
   );
 };
 
-export default Home;
+export default Page;

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { DeleteStudent as deleteFunc } from "@/app/hooks/StudentFunc";
+import { DeleteStudent as deleteFunc } from "@/lib/hooks/StudentFunc";
 
 interface DeleteStudentProps {
   studentID: string;
@@ -18,6 +18,7 @@ interface DeleteStudentProps {
   results: string;
   email: string;
   phone_no: string;
+  modal: Function;
 }
 
 const DeleteStudent = ({
@@ -27,6 +28,7 @@ const DeleteStudent = ({
   results,
   email,
   phone_no,
+  modal,
 }: DeleteStudentProps) => {
   const { toast } = useToast();
   return (
@@ -48,6 +50,7 @@ const DeleteStudent = ({
           type="submit"
           onClick={() => {
             deleteFunc(studentID);
+            modal();
             setTimeout(() => {
               toast({
                 variant: "destructive",

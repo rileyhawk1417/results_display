@@ -6,6 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface StudentCardProps {
   studentID: string;
@@ -34,9 +35,12 @@ const StudentCard = (
           </div>
         </DialogDescription>
       </DialogHeader>
-      <DialogFooter>
-        <Button type="submit">Confirm</Button>
-      </DialogFooter>
+
+      <Link href={`/student/${studentID}`} target="_blank">
+        <DialogFooter>
+          <Button>View More</Button>
+        </DialogFooter>
+      </Link>
     </DialogContent>
   );
 };

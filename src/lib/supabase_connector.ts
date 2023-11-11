@@ -1,13 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 import { Database } from "@/types/supabase";
-
-const supabase = createClient<Database>(
-  //@ts-ignore
-  //TODO: DB url is throwing an error
-  process.env.DB_URL,
-  process.env.DB_KEY,
+const dbUrl = process.env.DB_URL as string;
+const dbKey = process.env.DB_KEY as string;
+const supabase = createClient(
+  dbUrl,
+  dbKey,
   {
     auth: { persistSession: false },
-  }
+  },
 );
 export default supabase;

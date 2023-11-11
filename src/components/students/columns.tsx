@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import StudentCard from "@/components/studentCard";
 import DeleteStudent from "@/components/students/deleteStudent";
+import { useState } from "react";
 
 interface StudentProps {
   id: string;
@@ -25,13 +26,16 @@ interface StudentProps {
   email: string;
   phone_no: string;
 }
-const ViewStudent = (
+const ViewStudentDialog = (
   { id, name, surname, results, email, phone_no }: StudentProps,
 ) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+        <DropdownMenuItem
+          onSelect={(e) => e.preventDefault()}
+          className="cursor-pointer"
+        >
           <span>View Student</span>
         </DropdownMenuItem>
       </DialogTrigger>
@@ -51,12 +55,14 @@ const ViewStudent = (
 const DeleteStudentDialog = (
   { id, name, surname, results, email, phone_no }: StudentProps,
 ) => {
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open}>
       <DialogTrigger asChild>
         <DropdownMenuItem
-          className="bg-red-500"
+          className="bg-red-500 cursor-pointer"
           onSelect={(e) => e.preventDefault()}
+          onClick={() => setOpen(true)}
         >
           <span>Delete Student</span>
         </DropdownMenuItem>
@@ -68,6 +74,7 @@ const DeleteStudentDialog = (
         results={results.toString()}
         email={email}
         phone_no={phone_no}
+        modal={() => setOpen(false)}
       />
     </Dialog>
   );
@@ -165,7 +172,7 @@ export const columns: ColumnDef<Student>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <ViewStudent
+              <ViewStudentDialog
                 id={student.id}
                 name={student.name}
                 surname={student.surname}
@@ -183,11 +190,6 @@ export const columns: ColumnDef<Student>[] = [
               />
             </DropdownMenuGroup>
           </DropdownMenuContent>
-          {
-            /* NOTE: Two modals can't trigger separately
-              Take a look at radix-ui
-          */
-          }
         </DropdownMenu>
       );
     },

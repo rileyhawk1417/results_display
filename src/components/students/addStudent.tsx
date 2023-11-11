@@ -26,7 +26,7 @@ import {
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { NewStudent } from "@/app/hooks/StudentFunc";
+import { NewStudent } from "@/lib/hooks/StudentFunc";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 
